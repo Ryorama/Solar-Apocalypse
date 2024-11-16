@@ -41,7 +41,7 @@
     "fabric-api": ">=${fabric_api}",
     "fabric-language-kotlin": ">=${fabric_language_kotlin}",
     "minecraft": ">=${minecraft}",
-    "java": ">=${java}",
+    "java": ">=17",
     "cloth-config2": ">=${clothconfig}"
   },
   "suggests": {

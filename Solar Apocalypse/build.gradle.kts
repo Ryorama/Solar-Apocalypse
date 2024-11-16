@@ -10,6 +10,9 @@ group = project.extra["maven_group"] as String
 repositories {
     maven("https://maven.shedaniel.me/")
     maven("https://maven.terraformersmc.com/")
+    flatDir {
+        dirs("libs")
+    }
 }
 dependencies {
     minecraft("com.mojang", "minecraft", project.extra["minecraft_version"] as String)
@@ -18,6 +21,7 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api", "fabric-api", project.extra["fabric_version"] as String)
     modImplementation("net.fabricmc", "fabric-language-kotlin", project.extra["fabric_language_kotlin_version"] as String)
     modImplementation("com.terraformersmc", "modmenu", project.extra["mod_menu_version"] as String)
+    modImplementation("net.caffeinemc.mods.sodium:sodium-fabric:0.5.11")
     modApi("me.shedaniel.cloth", "cloth-config-fabric", project.extra["cloth_config_version"] as String) { exclude("net.fabricmc.fabric-api") }
 }
 tasks {
