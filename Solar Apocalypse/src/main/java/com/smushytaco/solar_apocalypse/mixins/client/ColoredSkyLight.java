@@ -17,15 +17,17 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Environment(EnvType.CLIENT)
 @Mixin(LightmapTextureManager.class)
 public abstract class ColoredSkyLight {
-    @Inject(method = "update", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/LightmapTextureManager;flickerIntensity:F"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    @Inject(method = "update", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/LightmapTextureManager;flickerIntensity:F"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void doOurLightMap(float partialTicks, CallbackInfo ci, ClientWorld $$1, float $$2, float $$4, float $$5, float $$6, float $$7, float $$11, float $$8, Vector3f skyVector) {
         if (SolarApocalypse.INSTANCE.getConfig().getEnableCustomSkyLight()) {
             int skylight = SolarApocalypseClient.INSTANCE.getSkyColor();
             ClientWorld clientWorld = MinecraftClient.getInstance().world;
-            if (skylight == SolarApocalypseClient.INSTANCE.getOriginalSkyColor() || clientWorld == null) {
-                ci.cancel();
+            if (clientWorld != null) {
+                if (skylight == SolarApocalypseClient.INSTANCE.getOriginalSkyColor()) {
+                    return;
+                }
+                skyVector.lerp(new Vector3f(SolarApocalypseClient.INSTANCE.getRedToFloat(skylight), SolarApocalypseClient.INSTANCE.getGreenToFloat(skylight), SolarApocalypseClient.INSTANCE.getBlueToFloat(skylight)), MathHelper.clamp(clientWorld.getSkyBrightness(1.0F), 0.0F, 1.0F));
             }
-            skyVector.lerp(new Vector3f(SolarApocalypseClient.INSTANCE.getRedToFloat(skylight), SolarApocalypseClient.INSTANCE.getGreenToFloat(skylight), SolarApocalypseClient.INSTANCE.getBlueToFloat(skylight)), MathHelper.clamp(clientWorld.getSkyBrightness(1.0F), 0.0F, 1.0F));
         }
     }
 }
